@@ -43,6 +43,18 @@ const Message = ({ content, createdAt, id, userId, channelId }) => {
           Edit
         </button>
       ) : null}
+
+      <div className={styles.reactions}>
+        <button>
+          👍 0
+        </button>
+        <button>
+          ❤️ 0
+        </button>
+        <button>
+          😂 0
+        </button>
+      </div>
     </div>
   );
 };

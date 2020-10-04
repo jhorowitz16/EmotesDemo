@@ -16,6 +16,7 @@
   & + .message {
     margin-top: 15px;
   }
+  margin-bottom: 40px;
 }
 
 .metadata {
@@ -51,4 +52,14 @@
 
 .message:hover .editButton {
   opacity: 1;
+}
+
+.reactions {
+  display: flex;
+}
+
+.reactions > button {
+  margin: 10px 20px 0;
+  background: transparent;
+
 }
