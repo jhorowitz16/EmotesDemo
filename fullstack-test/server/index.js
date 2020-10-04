@@ -98,6 +98,10 @@ app.post("/channels/:channelId/messages", async (req, res) => {
   res.status(200).send();
 });
 
+/**
+  Edit logic reused for Reactions.
+  Update the message to include/exclude the toggled reaction.
+*/
 app.patch("/channels/:channelId/messages/:messageId", async (req, res) => {
   const { messageId } = req.params;
   const { content, reactions } = req.body;

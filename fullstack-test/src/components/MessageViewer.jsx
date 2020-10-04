@@ -8,8 +8,14 @@ import { useUserStore } from "../stores/users";
 import MessageEditor from "./MessageEditor";
 import styles from "./MessageViewer.module.scss";
 
+// Reaction Enum for mapping reaction ids.
+const REACTION_ENUM = Object.freeze({"thumb": 0, "heart": 1, "laugh": 2});
+
+/**
+  Toggles the reaction for a given reaction type (thumb/heart/laugh) for the
+  signed in user and the selected message.
+*/
 function toggleReaction(reaction, userId, messageId, channelId, content, oldReactions=[]) {
-  console.log(reaction, userId, messageId, channelId);
   const repeatIndex = oldReactions.findIndex(oldReaction =>
     Object.keys(oldReaction).includes(userId) &&
     Object.values(oldReaction).includes(reaction));
@@ -34,13 +40,10 @@ const Message = ({ content, createdAt, id, userId, channelId, reactions }) => {
   const activeUserId = useUserStore(state => state.activeUserId);
   const dateInstance = React.useMemo(() => new Date(createdAt), [createdAt]);
 
-  console.log('reactions:', reactions);
-  let flattened = [];
-  flattened = (reactions && reactions.map(reaction => Object.values(reaction)).flat()) || [];
-
-  const thumbs = flattened.filter(x => x === 0).length;
-  const hearts = flattened.filter(x => x === 1).length;
-  const laughs = flattened.filter(x => x === 2).length;
+  const flattened = (reactions && reactions.map(reaction => Object.values(reaction)).flat()) || [];
+  const thumbs = flattened.filter(x => x === REACTION_ENUM.thumb).length;
+  const hearts = flattened.filter(x => x === REACTION_ENUM.heart).length;
+  const laughs = flattened.filter(x => x === REACTION_ENUM.laugh).length;
 
   return (
     <div className={styles.message}>
@@ -99,7 +102,6 @@ const MessageViewer = () => {
     () => allMessages.filter(message => message.channelId === activeChannelId),
     [activeChannelId, allMessages]
   );
-  console.log(messagesForActiveChannel);
   const isEmpty = messagesForActiveChannel.length === 0;
 
   return (

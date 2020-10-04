@@ -9,7 +9,7 @@ const db = new Datastore({
 
 class Message {
   constructor(rawMessage) {
-    const { _id: id, reactions, channelId, content, createdAt, userId } = rawMessage;
+    const { _id: id, channelId, content, createdAt, userId, reactions} = rawMessage;
     this.createdAt = createdAt == null ? Date.now() : createdAt;
     this.id = id;
     this.channelId = channelId;
