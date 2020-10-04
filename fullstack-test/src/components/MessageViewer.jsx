@@ -2,10 +2,22 @@ import classnames from "classnames";
 import formatRelative from "date-fns/formatRelative";
 import React from "react";
 import { useChannelStore } from "../stores/channels";
+import { editMessage } from "../actions";
 import { useMessageStore } from "../stores/messages";
 import { useUserStore } from "../stores/users";
 import MessageEditor from "./MessageEditor";
 import styles from "./MessageViewer.module.scss";
+
+function toggleReaction(reaction, userId, messageId, channelId) {
+  console.log(reaction, userId, messageId, channelId);
+  const reactions = [{"someid":0},{"newone":1}];
+  editMessage({
+    messageId,
+    channelId,
+    content: "<3 new new new",
+    reactions,
+  });
+}
 
 const Message = ({ content, createdAt, id, userId, channelId, reactions }) => {
   const [isEditing, setIsEditing] = React.useState(false);
@@ -16,7 +28,8 @@ const Message = ({ content, createdAt, id, userId, channelId, reactions }) => {
   const dateInstance = React.useMemo(() => new Date(createdAt), [createdAt]);
 
   console.log('reactions:', reactions);
-  const flattened = reactions.map(reaction => Object.values(reaction)).flat();
+  let flattened = [];
+  flattened = reactions && reactions.map(reaction => Object.values(reaction)).flat() || [];
 
   const thumbs = flattened.filter(x => x === 0).length;
   const hearts = flattened.filter(x => x === 1).length;
@@ -52,13 +65,19 @@ const Message = ({ content, createdAt, id, userId, channelId, reactions }) => {
       ) : null}
 
       <div className={styles.reactions}>
-        <button>
+        <button
+          onClick={() => toggleReaction(0, activeUserId, id, channelId)}
+        >
           👍 {thumbs}
         </button>
-        <button>
+        <button
+          onClick={() => toggleReaction(1, activeUserId, id, channelId)}
+        >
           ❤️ {hearts}
         </button>
-        <button>
+        <button
+          onClick={() => toggleReaction(2, activeUserId, id, channelId)}
+        >
           😂 {laughs}
         </button>
       </div>

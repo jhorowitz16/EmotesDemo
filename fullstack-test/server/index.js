@@ -100,10 +100,11 @@ app.post("/channels/:channelId/messages", async (req, res) => {
 
 app.patch("/channels/:channelId/messages/:messageId", async (req, res) => {
   const { messageId } = req.params;
-  const { content } = req.body;
+  const { content, reactions } = req.body;
   const message = await Message.getById(messageId);
   if (message != null && message.userId === req.session.userId) {
-    message.content = content;
+    message.content = content + 'hey there';
+    message.reactions = reactions;
     try {
       await message.save();
       fetchAndEmitMessages(socketServer);

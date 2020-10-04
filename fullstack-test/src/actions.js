@@ -30,8 +30,9 @@ export const logOut = async () => {
   window.localStorage.setItem(localStorageKeys.USER_ID, "");
 };
 
-export const editMessage = async ({ messageId, channelId, content }) => {
+export const editMessage = async ({ messageId, channelId, content, reactions }) => {
   await axios.patch(getRoute(`/channels/${channelId}/messages/${messageId}`), {
-    content
+    content,
+    reactions
   });
 };
