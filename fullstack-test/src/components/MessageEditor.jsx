@@ -22,7 +22,8 @@ const MessageEditor = ({ id, content, onClose, channelId }) => {
         await editMessage({
           messageId: id,
           channelId,
-          content: inputRef.current.value
+          content: inputRef.current.value,
+          reactions: [],
         });
         onClose();
       }}

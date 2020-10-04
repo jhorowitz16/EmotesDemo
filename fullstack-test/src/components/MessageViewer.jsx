@@ -8,9 +8,16 @@ import { useUserStore } from "../stores/users";
 import MessageEditor from "./MessageEditor";
 import styles from "./MessageViewer.module.scss";
 
-function toggleReaction(reaction, userId, messageId, channelId) {
+function toggleReaction(reaction, userId, messageId, channelId, oldReactions=[]) {
   console.log(reaction, userId, messageId, channelId);
-  const reactions = [{"someid":0},{"newone":1}];
+  const repeatIndex = oldReactions.findIndex(oldReaction =>
+    Object.keys(oldReaction).includes(userId) &&
+    Object.values(oldReaction).includes(reaction));
+
+  const reactions = repeatIndex === -1 ?
+    oldReactions.concat([{[userId]:reaction}]) :
+    oldReactions.slice(0, repeatIndex).concat(oldReactions.slice(repeatIndex +1));
+    
   editMessage({
     messageId,
     channelId,
@@ -29,7 +36,7 @@ const Message = ({ content, createdAt, id, userId, channelId, reactions }) => {
 
   console.log('reactions:', reactions);
   let flattened = [];
-  flattened = reactions && reactions.map(reaction => Object.values(reaction)).flat() || [];
+  flattened = (reactions && reactions.map(reaction => Object.values(reaction)).flat()) || [];
 
   const thumbs = flattened.filter(x => x === 0).length;
   const hearts = flattened.filter(x => x === 1).length;
@@ -66,19 +73,19 @@ const Message = ({ content, createdAt, id, userId, channelId, reactions }) => {
 
       <div className={styles.reactions}>
         <button
-          onClick={() => toggleReaction(0, activeUserId, id, channelId)}
+          onClick={() => toggleReaction(0, activeUserId, id, channelId, reactions)}
         >
-          👍 {thumbs}
+          👍 &nbsp;{thumbs}
         </button>
         <button
-          onClick={() => toggleReaction(1, activeUserId, id, channelId)}
+          onClick={() => toggleReaction(1, activeUserId, id, channelId, reactions)}
         >
-          ❤️ {hearts}
+          ❤️  &nbsp; {hearts}
         </button>
         <button
-          onClick={() => toggleReaction(2, activeUserId, id, channelId)}
+          onClick={() => toggleReaction(2, activeUserId, id, channelId, reactions)}
         >
-          😂 {laughs}
+          😂 &nbsp; {laughs}
         </button>
       </div>
     </div>
