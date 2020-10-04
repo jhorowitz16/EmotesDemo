@@ -8,7 +8,7 @@ import { useUserStore } from "../stores/users";
 import MessageEditor from "./MessageEditor";
 import styles from "./MessageViewer.module.scss";
 
-function toggleReaction(reaction, userId, messageId, channelId, oldReactions=[]) {
+function toggleReaction(reaction, userId, messageId, channelId, content, oldReactions=[]) {
   console.log(reaction, userId, messageId, channelId);
   const repeatIndex = oldReactions.findIndex(oldReaction =>
     Object.keys(oldReaction).includes(userId) &&
@@ -17,11 +17,11 @@ function toggleReaction(reaction, userId, messageId, channelId, oldReactions=[])
   const reactions = repeatIndex === -1 ?
     oldReactions.concat([{[userId]:reaction}]) :
     oldReactions.slice(0, repeatIndex).concat(oldReactions.slice(repeatIndex +1));
-    
+
   editMessage({
     messageId,
     channelId,
-    content: "<3 new new new",
+    content,
     reactions,
   });
 }
@@ -73,17 +73,17 @@ const Message = ({ content, createdAt, id, userId, channelId, reactions }) => {
 
       <div className={styles.reactions}>
         <button
-          onClick={() => toggleReaction(0, activeUserId, id, channelId, reactions)}
+          onClick={() => toggleReaction(0, activeUserId, id, channelId, content, reactions)}
         >
           👍 &nbsp;{thumbs}
         </button>
         <button
-          onClick={() => toggleReaction(1, activeUserId, id, channelId, reactions)}
+          onClick={() => toggleReaction(1, activeUserId, id, channelId, content, reactions)}
         >
           ❤️  &nbsp; {hearts}
         </button>
         <button
-          onClick={() => toggleReaction(2, activeUserId, id, channelId, reactions)}
+          onClick={() => toggleReaction(2, activeUserId, id, channelId, content, reactions)}
         >
           😂 &nbsp; {laughs}
         </button>
