@@ -7,13 +7,20 @@ import { useUserStore } from "../stores/users";
 import MessageEditor from "./MessageEditor";
 import styles from "./MessageViewer.module.scss";
 
-const Message = ({ content, createdAt, id, userId, channelId }) => {
+const Message = ({ content, createdAt, id, userId, channelId, reactions }) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const user = useUserStore(state =>
     state.users.find(user => user.id === userId)
   );
   const activeUserId = useUserStore(state => state.activeUserId);
   const dateInstance = React.useMemo(() => new Date(createdAt), [createdAt]);
+
+  console.log('reactions:', reactions);
+  const flattened = reactions.map(reaction => Object.values(reaction)).flat();
+
+  const thumbs = flattened.filter(x => x === 0).length;
+  const hearts = flattened.filter(x => x === 1).length;
+  const laughs = flattened.filter(x => x === 2).length;
 
   return (
     <div className={styles.message}>
@@ -46,13 +53,13 @@ const Message = ({ content, createdAt, id, userId, channelId }) => {
 
       <div className={styles.reactions}>
         <button>
-          👍 0
+          👍 {thumbs}
         </button>
         <button>
-          ❤️ 0
+          ❤️ {hearts}
         </button>
         <button>
-          😂 0
+          😂 {laughs}
         </button>
       </div>
     </div>
@@ -66,6 +73,7 @@ const MessageViewer = () => {
     () => allMessages.filter(message => message.channelId === activeChannelId),
     [activeChannelId, allMessages]
   );
+  console.log(messagesForActiveChannel);
   const isEmpty = messagesForActiveChannel.length === 0;
 
   return (
@@ -88,6 +96,7 @@ const MessageViewer = () => {
             content={message.content}
             createdAt={message.createdAt}
             userId={message.userId}
+            reactions={message.reactions}
           />
         ))
       )}

@@ -9,12 +9,13 @@ const db = new Datastore({
 
 class Message {
   constructor(rawMessage) {
-    const { _id: id, channelId, content, createdAt, userId } = rawMessage;
+    const { _id: id, reactions, channelId, content, createdAt, userId } = rawMessage;
     this.createdAt = createdAt == null ? Date.now() : createdAt;
     this.id = id;
     this.channelId = channelId;
     this.content = content;
     this.userId = userId;
+    this.reactions = reactions;
   }
 
   static getAll() {
@@ -63,7 +64,8 @@ class Message {
       channelId: this.channelId,
       content: this.content,
       createdAt: this.createdAt,
-      userId: this.userId
+      userId: this.userId,
+      reactions: this.reactions,
     };
   }
 }
