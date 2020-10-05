@@ -30,4 +30,30 @@ Please spend up to two hours implementing the frontend and backend for a message
 
 See Video Walkthrough: https://www.loom.com/share/c1fb4a97fe0a4421ba1683650fbc9523
 
+Tradeoffs:
+
+Reaction Storage
+- Storing messages as a list of {id: reaction} results in N copies of the reaction id being stored.
+- An alternative would be to map the reaction type to the list of user ids ({0: <ID-one>, <ID-two> etc.})
+- This alternative would be more space efficient for the db, but more difficult when writing new entries
+
+Reusing the Edit endpoint
+- Reducing a reaction update to another way of editing a message made the server changes minimal
+- No need for a new endpoint by reusing the Edit one.
+- Needed to change the user validation logic to allow "reaction-editing" another user's message
+- Could explore creating a new endpoint specifically for reactions
+- The server call for the endpoint currently takes many unneeded parameters because of the shared logic with edit.
+- Switching over to a designated reaction endpoint would clean up the code here.
+
+
+Fast Follows:
+
+- Display which users have reacted in which way onHover.
+- Clean up duplicated parameters (the many IDs) that are passed background
+- Could take advantage of a Set or similar object that's easier to iterate through on
+  the Clientside when checking if specific ids are already in the reaction list.
+- Could explore a User or Message object that could be shared in place of the ID strings
+
+
+
 _[edit me!]_
