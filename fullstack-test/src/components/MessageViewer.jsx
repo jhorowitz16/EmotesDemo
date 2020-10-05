@@ -76,17 +76,17 @@ const Message = ({ content, createdAt, id, userId, channelId, reactions }) => {
 
       <div className={styles.reactions}>
         <button
-          onClick={() => toggleReaction(0, activeUserId, id, channelId, content, reactions)}
+          onClick={() => toggleReaction(REACTION_ENUM.thumb, activeUserId, id, channelId, content, reactions)}
         >
           👍 &nbsp;{thumbs}
         </button>
         <button
-          onClick={() => toggleReaction(1, activeUserId, id, channelId, content, reactions)}
+          onClick={() => toggleReaction(REACTION_ENUM.heart, activeUserId, id, channelId, content, reactions)}
         >
           ❤️  &nbsp; {hearts}
         </button>
         <button
-          onClick={() => toggleReaction(2, activeUserId, id, channelId, content, reactions)}
+          onClick={() => toggleReaction(REACTION_ENUM.laugh, activeUserId, id, channelId, content, reactions)}
         >
           😂 &nbsp; {laughs}
         </button>
