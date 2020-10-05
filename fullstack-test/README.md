@@ -28,4 +28,6 @@ Please spend up to two hours implementing the frontend and backend for a message
 
 ## Tradeoffs and follow-ups
 
+See Video Walkthrough: https://www.loom.com/share/c1fb4a97fe0a4421ba1683650fbc9523
+
 _[edit me!]_
